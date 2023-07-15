@@ -1,0 +1,137 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "AiScene",
+"language": "GDScript",
+"path": "res://src/AiScene.gd"
+}, {
+"base": "Node",
+"class": "ArrayUtils",
+"language": "GDScript",
+"path": "res://src/utils/ArrayUtils.gd"
+}, {
+"base": "Resource",
+"class": "Card",
+"language": "GDScript",
+"path": "res://src/Card.gd"
+}, {
+"base": "HBoxContainer",
+"class": "CardContainer",
+"language": "GDScript",
+"path": "res://src/CardContainer.gd"
+}, {
+"base": "Reference",
+"class": "Drawing",
+"language": "GDScript",
+"path": "res://src/utils/Drawing.gd"
+}, {
+"base": "Reference",
+"class": "HandComparator",
+"language": "GDScript",
+"path": "res://src/HandComparator.gd"
+}, {
+"base": "Reference",
+"class": "JsonFormatter",
+"language": "GDScript",
+"path": "res://src/utils/JsonFormatter.gd"
+}, {
+"base": "Node",
+"class": "Math",
+"language": "GDScript",
+"path": "res://src/utils/Math.gd"
+}, {
+"base": "Label",
+"class": "Moneylabel",
+"language": "GDScript",
+"path": "res://src/MoneyLabel.gd"
+}, {
+"base": "Node",
+"class": "NodeUtils",
+"language": "GDScript",
+"path": "res://src/utils/NodeUtils.gd"
+}, {
+"base": "Reference",
+"class": "Noise",
+"language": "GDScript",
+"path": "res://src/utils/Noise.gd"
+}, {
+"base": "Node",
+"class": "PoolVector2Utils",
+"language": "GDScript",
+"path": "res://src/utils/PoolVector2Utils.gd"
+}, {
+"base": "Resource",
+"class": "Result",
+"language": "GDScript",
+"path": "res://src/Result.gd"
+}, {
+"base": "Node",
+"class": "StringUtils",
+"language": "GDScript",
+"path": "res://src/utils/StringUtils.gd"
+} ]
+_global_script_class_icons={
+"AiScene": "",
+"ArrayUtils": "",
+"Card": "",
+"CardContainer": "",
+"Drawing": "",
+"HandComparator": "",
+"JsonFormatter": "",
+"Math": "",
+"Moneylabel": "",
+"NodeUtils": "",
+"Noise": "",
+"PoolVector2Utils": "",
+"Result": "",
+"StringUtils": ""
+}
+
+[application]
+
+config/name="GameManager"
+run/main_scene="res://src/Main.tscn"
+config/icon="res://icon.png"
+
+[autoload]
+
+Random="*res://src/utils/Random.gd"
+WaitUtil="*res://src/utils/WaitUtil.gd"
+
+[display]
+
+window/size/height=768
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[input]
+
+mouse_click={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":1,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+
+[physics]
+
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+vram_compression/import_etc=true
+vram_compression/import_etc2=false
+environment/default_environment="res://default_env.tres"

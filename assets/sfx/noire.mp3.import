@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/noire.mp3-21d3440b758c02d27f4110ae360e536a.mp3str"
+
+[deps]
+
+source_file="res://assets/sfx/noire.mp3"
+dest_files=[ "res://.import/noire.mp3-21d3440b758c02d27f4110ae360e536a.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

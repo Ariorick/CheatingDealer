@@ -1,0 +1,481 @@
+[gd_scene load_steps=35 format=2]
+
+[ext_resource path="res://src/Game.gd" type="Script" id=1]
+[ext_resource path="res://src/AiScene.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/TableArea.gd" type="Script" id=3]
+[ext_resource path="res://assets/cards/all_in_one.PNG" type="Texture" id=4]
+[ext_resource path="res://src/CardContainer.gd" type="Script" id=5]
+[ext_resource path="res://assets/ui/theme.tres" type="Theme" id=6]
+[ext_resource path="res://assets/ui/American Typewriter Regular.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://src/MoneyLabel.gd" type="Script" id=8]
+[ext_resource path="res://assets/images/win_screen.PNG" type="Texture" id=9]
+[ext_resource path="res://assets/images/ai3.PNG" type="Texture" id=10]
+[ext_resource path="res://assets/images/ai1.PNG" type="Texture" id=11]
+[ext_resource path="res://assets/images/a1-1.PNG" type="Texture" id=12]
+[ext_resource path="res://assets/images/background1.PNG" type="Texture" id=13]
+[ext_resource path="res://assets/images/loser.PNG" type="Texture" id=14]
+[ext_resource path="res://assets/images/ai2.PNG" type="Texture" id=15]
+[ext_resource path="res://assets/shaders/shader_wobble.tres" type="Material" id=16]
+[ext_resource path="res://src/CharacterSprite.gd" type="Script" id=17]
+[ext_resource path="res://assets/images/ai3-1.PNG" type="Texture" id=18]
+[ext_resource path="res://assets/images/loser-1.PNG" type="Texture" id=19]
+[ext_resource path="res://assets/images/ai2-1.PNG" type="Texture" id=20]
+[ext_resource path="res://assets/images/table2.PNG" type="Texture" id=21]
+[ext_resource path="res://src/Help.tscn" type="PackedScene" id=22]
+[ext_resource path="res://assets/images/loser2.PNG" type="Texture" id=23]
+[ext_resource path="res://assets/images/lose_screen.PNG" type="Texture" id=24]
+
+[sub_resource type="DynamicFont" id=5]
+size = 30
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=14]
+size = 20
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=6]
+font_data = ExtResource( 7 )
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 180, 50.625 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 60
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=13]
+size = 20
+font_data = ExtResource( 7 )
+
+[sub_resource type="Shader" id=9]
+code = "shader_type canvas_item;
+
+uniform float seed = 81.0;
+uniform float power : hint_range( 0.0, 1.0 ) = 0.0009;
+uniform float speed = 0.0;
+
+vec2 random( vec2 pos )
+{ 
+	return fract(
+		sin(
+			vec2(
+				dot(pos, vec2(12.9898,78.233))
+			,	dot(pos, vec2(-148.998,-65.233))
+			)
+		) * 43758.5453
+	);
+}
+
+void fragment( )
+{
+	COLOR = textureLod( SCREEN_TEXTURE, SCREEN_UV, 0.0 ) + texture(TEXTURE, UV + vec2(random(vec2(TIME)))) * 0.1;
+}"
+
+[sub_resource type="ShaderMaterial" id=10]
+shader = SubResource( 9 )
+shader_param/seed = 81.0
+shader_param/power = 0.0009
+shader_param/speed = 0.0
+
+[sub_resource type="OpenSimplexNoise" id=11]
+period = 9.9
+persistence = 0.538
+
+[sub_resource type="NoiseTexture" id=12]
+width = 2000
+height = 2000
+seamless = true
+noise = SubResource( 11 )
+
+[node name="Game" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Background" type="TextureRect" parent="."]
+margin_right = 2048.0
+margin_bottom = 1536.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 13 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.0666667 )
+margin_right = 2048.0
+margin_bottom = 1536.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+
+[node name="Ai1Sprite" type="Sprite" parent="."]
+material = ExtResource( 16 )
+position = Vector2( 177, 216 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 11 )
+script = ExtResource( 17 )
+alt_texture = ExtResource( 12 )
+
+[node name="Ai1Sprite2" type="Sprite" parent="."]
+material = ExtResource( 16 )
+position = Vector2( 522, 178 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 15 )
+script = ExtResource( 17 )
+alt_texture = ExtResource( 20 )
+
+[node name="Ai1Sprite3" type="Sprite" parent="."]
+material = ExtResource( 16 )
+position = Vector2( 796, 204 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 10 )
+script = ExtResource( 17 )
+alt_texture = ExtResource( 18 )
+
+[node name="Table" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 21 )
+centered = false
+
+[node name="AiScene" parent="." instance=ExtResource( 2 )]
+position = Vector2( 79, 253 )
+sprite = NodePath("../Ai1Sprite")
+
+[node name="Money" parent="AiScene" index="0"]
+margin_left = 184.0
+margin_top = -124.0
+margin_right = 244.0
+margin_bottom = -96.0
+
+[node name="Bet" parent="AiScene" index="1"]
+margin_left = 151.0
+margin_top = 184.0
+margin_right = 191.0
+margin_bottom = 208.0
+rect_rotation = -19.8
+
+[node name="CardsContainer" parent="AiScene" index="2"]
+margin_left = 65.0
+margin_top = 108.0
+margin_right = 105.0
+margin_bottom = 148.0
+rect_rotation = -19.8
+
+[node name="AiScene2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 426, 209 )
+sprite = NodePath("../Ai1Sprite2")
+
+[node name="Money" parent="AiScene2" index="0"]
+margin_left = 171.0
+margin_top = -129.0
+margin_right = 231.0
+margin_bottom = -101.0
+
+[node name="Bet" parent="AiScene2" index="1"]
+margin_left = 57.0
+margin_top = 179.0
+margin_right = 97.0
+rect_rotation = -2.0
+
+[node name="CardsContainer" parent="AiScene2" index="2"]
+margin_left = 8.0
+margin_top = 78.0
+margin_right = 48.0
+margin_bottom = 118.0
+rect_rotation = -3.0
+
+[node name="AiScene3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 734, 242 )
+sprite = NodePath("../Ai1Sprite3")
+
+[node name="Money" parent="AiScene3" index="0"]
+margin_left = 195.0
+margin_top = -63.0
+margin_right = 255.0
+margin_bottom = -35.0
+
+[node name="Bet" parent="AiScene3" index="1"]
+margin_left = 2.0
+margin_top = 158.0
+margin_right = 42.0
+margin_bottom = 182.0
+rect_rotation = 12.5
+
+[node name="CardsContainer" parent="AiScene3" index="2"]
+margin_left = -14.0
+margin_top = 53.0
+margin_right = 26.0
+margin_bottom = 93.0
+rect_rotation = 12.5
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 583, 502 )
+sprite = NodePath("../Loser")
+
+[node name="Money" parent="Player" index="0"]
+margin_left = 355.0
+margin_top = -44.0
+margin_right = 415.0
+margin_bottom = -16.0
+
+[node name="Bet" parent="Player" index="1"]
+margin_left = 121.0
+margin_top = 43.0
+margin_right = 161.0
+margin_bottom = 67.0
+
+[node name="CardsContainer" parent="Player" index="2"]
+margin_left = -42.0
+margin_top = 62.0
+margin_right = -2.0
+margin_bottom = 102.0
+
+[node name="Loser" type="Sprite" parent="."]
+material = ExtResource( 16 )
+position = Vector2( 851, 612 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 19 )
+script = ExtResource( 17 )
+alt_texture = ExtResource( 14 )
+win_texture = ExtResource( 23 )
+
+[node name="Hint" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Hint" type="Label" parent="Hint"]
+modulate = Color( 1, 1, 1, 0.219608 )
+margin_left = 361.0
+margin_top = 431.0
+margin_right = 653.0
+margin_bottom = 467.0
+theme = ExtResource( 6 )
+custom_fonts/font = SubResource( 5 )
+text = "DRAG CARDS HERE"
+
+[node name="Hint2" type="Label" parent="Hint"]
+modulate = Color( 1, 1, 1, 0.219608 )
+margin_left = 383.0
+margin_top = 409.0
+margin_right = 675.0
+margin_bottom = 445.0
+theme = ExtResource( 6 )
+custom_fonts/font = SubResource( 14 )
+text = "on mobile click, then drag"
+
+[node name="DealerHand" type="HBoxContainer" parent="."]
+margin_left = 33.0
+margin_top = 535.0
+margin_right = 144.0
+margin_bottom = 575.0
+
+[node name="BankHand" type="HBoxContainer" parent="."]
+margin_left = 339.0
+margin_top = 411.0
+margin_right = 450.0
+margin_bottom = 451.0
+rect_scale = Vector2( 0.7, 0.7 )
+custom_constants/separation = 8
+script = ExtResource( 5 )
+
+[node name="NextRoundButton" type="Button" parent="."]
+margin_left = 97.0
+margin_top = 693.0
+margin_right = 257.0
+margin_bottom = 739.0
+theme = ExtResource( 6 )
+text = "Next round"
+
+[node name="ShowCardsButton" type="Button" parent="."]
+margin_left = 97.0
+margin_top = 693.0
+margin_right = 258.0
+margin_bottom = 739.0
+theme = ExtResource( 6 )
+text = "Show cards"
+
+[node name="BetButton" type="Button" parent="."]
+margin_left = 512.0
+margin_top = 693.0
+margin_right = 576.0
+margin_bottom = 739.0
+theme = ExtResource( 6 )
+text = "Bet"
+
+[node name="AllInButton" type="Button" parent="."]
+margin_left = 588.0
+margin_top = 694.0
+margin_right = 698.0
+margin_bottom = 740.0
+theme = ExtResource( 6 )
+text = "ALL IN"
+
+[node name="WhatShould" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.831373 )
+margin_left = 626.0
+margin_top = 616.0
+margin_right = 877.0
+margin_bottom = 667.0
+theme = ExtResource( 6 )
+custom_fonts/font = SubResource( 6 )
+text = "What should 
+I do? pls help"
+align = 1
+
+[node name="TableArea" type="Area2D" parent="."]
+position = Vector2( 254, -51 )
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TableArea"]
+position = Vector2( 246, 494 )
+shape = SubResource( 1 )
+
+[node name="Bank" type="Label" parent="."]
+margin_left = 452.0
+margin_top = 500.0
+margin_right = 552.0
+margin_bottom = 540.0
+rect_min_size = Vector2( 100, 40 )
+rect_pivot_offset = Vector2( 50, 20 )
+theme = ExtResource( 6 )
+custom_fonts/font = SubResource( 5 )
+text = "500$"
+align = 1
+valign = 1
+script = ExtResource( 8 )
+start_text = "Bank: "
+
+[node name="Combo" type="Label" parent="."]
+margin_left = 2.0
+margin_top = 469.0
+margin_right = 282.0
+margin_bottom = 685.0
+grow_horizontal = 2
+grow_vertical = 2
+rect_rotation = -13.2
+theme = ExtResource( 6 )
+custom_fonts/font = SubResource( 3 )
+text = "Straight!"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="BobName" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+margin_left = 243.0
+margin_top = 97.0
+margin_right = 346.0
+margin_bottom = 156.0
+grow_horizontal = 2
+theme = ExtResource( 6 )
+custom_fonts/font = SubResource( 13 )
+text = "Scary Bob"
+align = 1
+autowrap = true
+
+[node name="KittyName" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+margin_left = 579.0
+margin_top = 50.0
+margin_right = 682.0
+margin_bottom = 109.0
+grow_horizontal = 2
+theme = ExtResource( 6 )
+custom_fonts/font = SubResource( 13 )
+text = "Miss Kitty"
+align = 1
+autowrap = true
+
+[node name="FoxName" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+margin_left = 906.0
+margin_top = 146.0
+margin_right = 1009.0
+margin_bottom = 205.0
+grow_horizontal = 2
+theme = ExtResource( 6 )
+custom_fonts/font = SubResource( 13 )
+text = "Fanny Fox"
+align = 1
+autowrap = true
+
+[node name="JimmyName" type="Label" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+margin_left = 916.0
+margin_top = 426.0
+margin_right = 1019.0
+margin_bottom = 485.0
+grow_horizontal = 2
+theme = ExtResource( 6 )
+custom_fonts/font = SubResource( 13 )
+text = "Lil Jimmy"
+align = 1
+autowrap = true
+
+[node name="Foreground" type="TextureRect" parent="."]
+visible = false
+material = SubResource( 10 )
+margin_right = 2048.0
+margin_bottom = 1536.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = SubResource( 12 )
+
+[node name="HelpButton" type="Button" parent="."]
+margin_left = 927.0
+margin_top = 19.0
+margin_right = 1003.0
+margin_bottom = 65.0
+theme = ExtResource( 6 )
+text = "?"
+
+[node name="Help" parent="." instance=ExtResource( 22 )]
+visible = false
+
+[node name="WinScreen" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="WinScreen"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 9 )
+
+[node name="ReplayButton" type="Button" parent="WinScreen"]
+margin_left = 615.0
+margin_top = 296.0
+margin_right = 764.0
+margin_bottom = 342.0
+theme = ExtResource( 6 )
+text = "Play again"
+
+[node name="LoseScreen" type="Control" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="LoseScreen"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 24 )
+
+[node name="ReplayButton" type="Button" parent="LoseScreen"]
+margin_left = 227.0
+margin_top = 570.0
+margin_right = 376.0
+margin_bottom = 616.0
+theme = ExtResource( 6 )
+text = "Play again"
+
+[connection signal="pressed" from="NextRoundButton" to="." method="_on_NextRoundButton_pressed"]
+[connection signal="pressed" from="ShowCardsButton" to="." method="_on_ShowCardsButton_pressed"]
+[connection signal="pressed" from="BetButton" to="." method="_on_BetButton_pressed"]
+[connection signal="pressed" from="AllInButton" to="." method="_on_AllInButton_pressed"]
+[connection signal="area_entered" from="TableArea" to="TableArea" method="_on_TableArea_area_entered"]
+[connection signal="area_exited" from="TableArea" to="TableArea" method="_on_TableArea_area_exited"]
+[connection signal="pressed" from="HelpButton" to="Help" method="_on_HelpButton_pressed"]
+[connection signal="pressed" from="WinScreen/ReplayButton" to="." method="_on_ReplayButton_pressed"]
+[connection signal="pressed" from="LoseScreen/ReplayButton" to="." method="_on_ReplayButton_pressed"]
+
+[editable path="AiScene"]
+[editable path="AiScene2"]
+[editable path="AiScene3"]
+[editable path="Player"]

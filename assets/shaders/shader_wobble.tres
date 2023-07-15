@@ -1,0 +1,44 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform sampler2D flowMap; //Displacement map
+uniform float strength;    //Force of the effect
+uniform float speed;       //Speed of the effect
+uniform int frames : hint_range(1, 10); //Frames of the effect
+uniform int frame_offset : hint_range(1, 100); //Frames of the effect
+
+//Returns a value between 0 and 1 depending of the frames -> exemple: frames = 4, frame 1 = 0.25
+float clock(float time){
+	float fframes = float(frames);
+	return floor(mod(time * speed + float(frame_offset), fframes)) / fframes;
+}
+
+void vertex() {
+	float c = clock(TIME) * 5.0;
+	float breath_strength = 10.0;
+	VERTEX += vec2(0, (1.0 - UV.y) * (sin(c) * breath_strength  + cos(c + 3.14 * (1.0 - UV.y)) * breath_strength));
+}
+
+void fragment() {
+	float c = clock(TIME); //Get clock frame
+	vec4 offset = texture(flowMap, vec2(UV.x + c, UV.y + c)) * strength; //Get offset 
+	COLOR = texture(TEXTURE, vec2(UV.x,UV.y) + offset.xy - vec2(0.5,0.5)*strength); //We need to remove the displacement
+}
+
+// TEST CLOCK
+/*
+void fragment(){
+	float c = clock(TIME);
+	COLOR = vec4( c, c, c, 1);
+}
+*/"
+
+[resource]
+resource_local_to_scene = true
+shader = SubResource( 1 )
+shader_param/strength = 0.0
+shader_param/speed = 1.6
+shader_param/frames = 10
+shader_param/frame_offset = null

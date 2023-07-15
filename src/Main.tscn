@@ -1,0 +1,137 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://src/Game.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/Main.gd" type="Script" id=2]
+[ext_resource path="res://assets/sfx/noire.mp3" type="AudioStream" id=3]
+[ext_resource path="res://assets/images/story1.PNG" type="Texture" id=4]
+[ext_resource path="res://assets/images/story4.PNG" type="Texture" id=5]
+[ext_resource path="res://assets/images/story2.PNG" type="Texture" id=6]
+[ext_resource path="res://assets/images/story3.PNG" type="Texture" id=7]
+[ext_resource path="res://src/IntoScene.gd" type="Script" id=8]
+[ext_resource path="res://assets/images/background1.PNG" type="Texture" id=9]
+[ext_resource path="res://assets/ui/theme.tres" type="Theme" id=10]
+[ext_resource path="res://assets/ui/American Typewriter Regular.ttf" type="DynamicFontData" id=11]
+
+[sub_resource type="DynamicFont" id=1]
+size = 60
+font_data = ExtResource( 11 )
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Game" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1, 0 )
+
+[node name="Intro" type="Control" parent="."]
+
+[node name="Background" type="TextureRect" parent="Intro"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 9 )
+
+[node name="Scene1" type="TextureRect" parent="Intro"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 4 )
+script = ExtResource( 8 )
+
+[node name="Label" type="Label" parent="Intro/Scene1"]
+margin_left = 252.0
+margin_top = 162.0
+margin_right = 1708.0
+margin_bottom = 282.0
+theme = ExtResource( 10 )
+custom_fonts/font = SubResource( 1 )
+text = "I work as a dealer in an underground poker club
+It's illegal, but cash makes it worthwhile"
+align = 1
+autowrap = true
+
+[node name="Scene2" type="TextureRect" parent="Intro"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 6 )
+script = ExtResource( 8 )
+
+[node name="Label2" type="Label" parent="Intro/Scene2"]
+margin_left = 164.0
+margin_top = 154.0
+margin_right = 1820.0
+margin_bottom = 374.0
+theme = ExtResource( 10 )
+custom_fonts/font = SubResource( 1 )
+text = "My friend Lil Jimmy begged for an invitation for months and today, I finally caved and gave him entry"
+align = 1
+autowrap = true
+
+[node name="Scene3" type="TextureRect" parent="Intro"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
+script = ExtResource( 8 )
+
+[node name="Label3" type="Label" parent="Intro/Scene3"]
+margin_left = 280.0
+margin_top = 110.0
+margin_right = 1736.0
+margin_bottom = 253.0
+theme = ExtResource( 10 )
+custom_fonts/font = SubResource( 1 )
+text = "That fool got drunk and bragged that he can get the prize even if he starts with just 10 bucks"
+align = 1
+autowrap = true
+
+[node name="Scene4" type="TextureRect" parent="Intro"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+script = ExtResource( 8 )
+
+[node name="Label4" type="Label" parent="Intro/Scene4"]
+margin_left = 238.0
+margin_top = 154.0
+margin_right = 1786.0
+margin_bottom = 443.0
+theme = ExtResource( 10 )
+custom_fonts/font = SubResource( 1 )
+text = "He really pissed everyone off, and the Boss said that he'd take a bullet unless he did what he claimed"
+align = 1
+autowrap = true
+
+[node name="Label5" type="Label" parent="Intro/Scene4"]
+margin_left = 606.0
+margin_top = 414.0
+margin_right = 2154.0
+margin_bottom = 703.0
+theme = ExtResource( 10 )
+custom_fonts/font = SubResource( 1 )
+text = "So now I gotta save his ass..."
+align = 1
+autowrap = true
+
+[node name="Tween" type="Tween" parent="Intro"]
+
+[node name="SkipButton" type="Button" parent="Intro"]
+modulate = Color( 1, 1, 1, 0.65098 )
+margin_left = 916.0
+margin_top = 26.0
+margin_right = 993.0
+margin_bottom = 72.0
+theme = ExtResource( 10 )
+text = "Skip"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -3.933
+autoplay = true
+
+[connection signal="scene_completed" from="Intro/Scene1" to="." method="_on_Scene1_scene_completed"]
+[connection signal="scene_completed" from="Intro/Scene2" to="." method="_on_Scene2_scene_completed"]
+[connection signal="scene_completed" from="Intro/Scene3" to="." method="_on_Scene3_scene_completed"]
+[connection signal="scene_completed" from="Intro/Scene4" to="." method="_on_Scene4_scene_completed"]
+[connection signal="pressed" from="Intro/SkipButton" to="." method="_on_SkipButton_pressed"]
